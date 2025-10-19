@@ -1,14 +1,15 @@
 
 
 import './App.css'
-import Contaner from './components/Contaner'
+import Container from './components/Container'
+
 
 function App() {
 
 
   return (
   
-    <Contaner/>
+    <Container/>
   )
 }
 

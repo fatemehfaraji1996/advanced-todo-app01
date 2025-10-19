@@ -6,17 +6,44 @@ import HambergerMenu from "./MenuBarLeft/HambergerMenu";
 import MenuBarRight from "./menuBarRight/MenuBarRight";
 import ListOfMenuBarLeft from "./MenuBarLeft/ListOfMenuBarLeft";
 import ListOfMenuBarRight from "./menuBarRight/ListOfMenuBarRight";
-
-const Contaner = () => {
+import { useRef } from "react";
+import { useEffect } from "react";
+const Container = () => {
   const [isOpenMenuBar, SetIsOpenMenuBar] = useState(false);
   const [isOpenProfile, SetIsOpenProfile] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+useEffect(() => {
+function handleClickOutside(event: Event) {
+  if (
+    menuRef.current &&
+    event.target instanceof Node &&
+    !menuRef.current.contains(event.target)
+  ) {
+    SetIsOpenMenuBar(false);
+  }
+}
+
+
+  if (isOpenMenuBar) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isOpenMenuBar]);
 
   return (
     <div className="w-full flex">
       {/* منوی همبرگر فقط در حالت موبایل */}
       <div className="block md:hidden w-full">
         <HambergerMenu handelClick={() => SetIsOpenMenuBar(!isOpenMenuBar)} />
-        {isOpenMenuBar && <ListOfMenuBarLeft />}
+        {isOpenMenuBar && (
+          <div ref={menuRef}>
+            <ListOfMenuBarLeft />
+          </div>
+        )}
       </div>
 
       {/* سایدبار چپ فقط در حالت دسکتاپ */}
@@ -44,4 +71,4 @@ const Contaner = () => {
   );
 };
 
-export default Contaner;
+export default Container ;
