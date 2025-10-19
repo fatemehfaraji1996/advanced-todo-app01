@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import CentersideBar from "./layouts/CentersideBar";
 import SideBarRight from "./layouts/SideBareRight";
 import SideBarLeft from "./layouts/SideBarLeft";
@@ -6,33 +6,55 @@ import HambergerMenu from "./MenuBarLeft/HambergerMenu";
 import MenuBarRight from "./menuBarRight/MenuBarRight";
 import ListOfMenuBarLeft from "./MenuBarLeft/ListOfMenuBarLeft";
 import ListOfMenuBarRight from "./menuBarRight/ListOfMenuBarRight";
-import { useRef } from "react";
-import { useEffect } from "react";
+
 const Container = () => {
   const [isOpenMenuBar, SetIsOpenMenuBar] = useState(false);
   const [isOpenProfile, SetIsOpenProfile] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
-useEffect(() => {
-function handleClickOutside(event: Event) {
-  if (
-    menuRef.current &&
-    event.target instanceof Node &&
-    !menuRef.current.contains(event.target)
-  ) {
-    SetIsOpenMenuBar(false);
-  }
-}
+  const menuLeftRef = useRef<HTMLDivElement>(null);
+  const menuRightRef = useRef<HTMLDivElement>(null);
 
+  // بستن منوی چپ با کلیک بیرون
+  useEffect(() => {
+    function handleClickOutsideLeft(event: Event) {
+      if (
+        menuLeftRef.current &&
+        event.target instanceof Node &&
+        !menuLeftRef.current.contains(event.target)
+      ) {
+        SetIsOpenMenuBar(false);
+      }
+    }
 
-  if (isOpenMenuBar) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
+    if (isOpenMenuBar) {
+      document.addEventListener("mousedown", handleClickOutsideLeft);
+    }
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [isOpenMenuBar]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideLeft);
+    };
+  }, [isOpenMenuBar]);
+
+  // بستن منوی پروفایل با کلیک بیرون
+  useEffect(() => {
+    function handleClickOutsideRight(event: Event) {
+      if (
+        menuRightRef.current &&
+        event.target instanceof Node &&
+        !menuRightRef.current.contains(event.target)
+      ) {
+        SetIsOpenProfile(false);
+      }
+    }
+
+    if (isOpenProfile) {
+      document.addEventListener("mousedown", handleClickOutsideRight);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideRight);
+    };
+  }, [isOpenProfile]);
 
   return (
     <div className="w-full flex">
@@ -40,7 +62,7 @@ function handleClickOutside(event: Event) {
       <div className="block md:hidden w-full">
         <HambergerMenu handelClick={() => SetIsOpenMenuBar(!isOpenMenuBar)} />
         {isOpenMenuBar && (
-          <div ref={menuRef}>
+          <div ref={menuLeftRef}>
             <ListOfMenuBarLeft />
           </div>
         )}
@@ -61,8 +83,13 @@ function handleClickOutside(event: Event) {
         <MenuBarRight
           handelClickProfile={() => SetIsOpenProfile(!isOpenProfile)}
         />
-        {isOpenProfile && <ListOfMenuBarRight />}
+        {isOpenProfile && (
+          <div ref={menuRightRef}>
+            <ListOfMenuBarRight />
+          </div>
+        )}
       </div>
+
       {/* سایدبار راست فقط در حالت دسکتاپ */}
       <div className="hidden md:block md:w-[25%]">
         <SideBarRight />
@@ -71,4 +98,4 @@ function handleClickOutside(event: Event) {
   );
 };
 
-export default Container ;
+export default Container;
