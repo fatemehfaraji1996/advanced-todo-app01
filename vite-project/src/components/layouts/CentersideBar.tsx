@@ -1,3 +1,4 @@
+
 import AddToDoForm from "../CenterSections/AddToDoForm"
 
 const  CentersideBar=()=> {
@@ -5,6 +6,8 @@ const  CentersideBar=()=> {
     <div className="bg-pink-100">
 <p>center</p>
 <AddToDoForm/>
+
+
     </div>
   )
 }
