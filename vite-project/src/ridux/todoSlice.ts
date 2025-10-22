@@ -2,10 +2,11 @@ import { createSlice} from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 type Todo = {
-  id: number;
-  name: string;
-  discription: string;
+    id: string;
+  Title: string;
+  Discription: string;
   isImportant: boolean;
+  isDone: boolean;
   isToday: boolean;
 };
 
@@ -19,7 +20,7 @@ const todoSlice = createSlice({
       state.push(action.payload);
     },
     deleteToDo: (state, action: PayloadAction<number>) => {
-      return state.filter(todo => todo.id !== action.payload);
+      return state.filter(todo => todo.id !== action.payload.toString());
     },
   },
 });

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
-// import { v4 as uuidv4 } from "uuid";
-// import Calender from "../Calendar"
+import { v4 as uuidv4 } from "uuid";
+import Calender from "../Calendar";
+import { useDispatch } from "react-redux";
+import { addToDo } from "../../ridux/todoSlice";
 type FormData = {
   id: string;
   Title: string;
@@ -10,14 +12,19 @@ type FormData = {
   isToday: boolean;
 };
 const AddToDoForm = () => {
+    const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
     console.log(data);
+    const toDoWithId = {...data,id:uuidv4()}
+dispatch(addToDo(toDoWithId))
+reset()
   };
 
   return (
@@ -29,8 +36,9 @@ const AddToDoForm = () => {
         placeholder="Title"
       />
 
- {/* <input/><Calender/> */}
-    
+      <input />
+      <Calender />
+
       {errors.Title && <p>{errors.Title.message}</p>}
 
       <input
@@ -45,20 +53,18 @@ const AddToDoForm = () => {
       />
       {errors.Discription && <p>{errors.Discription.message}</p>}
 
-       <label className="">
-  <input className="" type="checkbox" {...register("isImportant")} /> Mark as important
-</label>
+      <label className="">
+        <input className="" type="checkbox" {...register("isImportant")} /> Mark
+        as important
+      </label>
 
-       <label className="">
-  <input className="" type="checkbox" {...register("isDone")} /> Mark as completed
-</label>
+      <label className="">
+        <input className="" type="checkbox" {...register("isDone")} /> Mark as
+        completed
+      </label>
 
       <button type="submit">Add Task</button>
-
-    
     </form>
-
-
   );
 };
 
