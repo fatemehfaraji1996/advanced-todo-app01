@@ -12,19 +12,27 @@ type FormData = {
   isToday: boolean;
 };
 const AddToDoForm = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+reset,
+
+
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
     console.log(data);
-    const toDoWithId = {...data,id:uuidv4()}
-dispatch(addToDo(toDoWithId))
-reset()
+    const toDoWithId = { ...data, id: uuidv4() };
+    dispatch(addToDo(toDoWithId));
+    reset({
+  Title: "",
+  Discription: "",
+  isImportant: false,
+  isDone: false,
+  isToday: false,
+})
   };
 
   return (
