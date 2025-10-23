@@ -10,7 +10,9 @@ import {DatePicker} from 'react-datepicker'
 
  return(
 
-  <DatePicker
+  <div className="mb-5 bg-white rounded-md">
+    
+ <DatePicker
       showIcon
       selected={selectedDate}
       onChange={(date: Date | null) => setSelectedDate(date)}
@@ -38,6 +40,9 @@ import {DatePicker} from 'react-datepicker'
         </svg>
       }
     />
+
+  </div>
+ 
     )
   
 };
