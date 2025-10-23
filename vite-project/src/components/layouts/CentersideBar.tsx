@@ -3,8 +3,8 @@ import AddToDoForm from "../CenterSections/AddToDoForm"
 
 const  CentersideBar=()=> {
   return (
-    <div className="bg-pink-100">
-<p>center</p>
+    <div className="flex flex-col items-center">
+
 <AddToDoForm/>
 
 
